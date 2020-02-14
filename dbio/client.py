@@ -25,27 +25,27 @@ SOFTWARE.
 
 from .models.connections import UserConnections
 from .models.user_details import UserDetails
+from .errors import HTTPException, DBioError
 import aiohttp
 
 
 class DBioClient:
-    BASE_URL = "https://api.discord.bio/v1"
-
     def __init__(self):
         self._session = aiohttp.ClientSession()
+        self.BASE_URL = "https://api.discord.bio/v1"
 
     async def api(self, path: str):
-        res = await self._session.get(path)
+        res = await self._session.get(self.BASE_URL + path)
         try:
             return await res.json()
         except Exception:
-            return  # Raise custom exception here
+            raise HTTPException(res)
 
     async def details(self, query: str) -> UserDetails:
         details = await self.api(f'/getUserDetails/{query}')
         if details['success']:
             return UserDetails(details)
-        return  # Raise custom exception here
+        raise DBioError
 
     async def connections(self, query: str, with_discord: bool = False) -> UserConnections:
         connections = await self.api(f'/getUserConnections/{query}')
