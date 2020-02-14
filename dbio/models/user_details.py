@@ -47,7 +47,7 @@ class Discord:
     avatar: Optional[str]
     discriminator: str
 
-    def __init__(self, obj: dict) -> Discord:
+    def __init__(self, obj: dict) -> 'Discord':
         assert isinstance(obj, dict)
         self.id = obj.get("id")
         self.username = obj.get("username")
@@ -68,7 +68,7 @@ class Settings:
     created_at: datetime
     banner: Optional[str]
 
-    def __init__(self, obj: dict) -> Settings:
+    def __init__(self, obj: dict) -> 'Settings':
         assert isinstance(obj, dict)
         self.user_id = int(obj.get("user_id"))
         self.name = obj.get("name")
@@ -87,7 +87,7 @@ class UserDetails:
     settings: Settings
     discord: Discord
 
-    def __init__(self, obj: dict) -> UserDetails:
+    def __init__(self, obj: dict) -> 'UserDetails':
         assert isinstance(obj, dict)
         self.settings = Settings(obj.get("settings"))
         self.discord = Discord(obj.get("discord"))

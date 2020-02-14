@@ -26,6 +26,18 @@ SOFTWARE.
 from typing import Optional, List
 
 
+class DiscordConnection:
+    connection_type: str
+    name: str
+    url: str
+
+    def __init__(self, obj: dict) -> 'DiscordConnection':
+        assert isinstance(obj, dict)
+        connection_type = obj.get("connection_type")
+        name = obj.get("name")
+        url = obj.get("url")
+
+
 class UserConnections:
     github: Optional[str]
     website: Optional[str]
@@ -34,7 +46,7 @@ class UserConnections:
     linkedin: Optional[str]
     discord: List[DiscordConnection]
 
-    def __init__(self, obj: dict, discord: list = list) -> UserConnections:
+    def __init__(self, obj: dict, discord: list = list) -> 'UserConnections':
         assert isinstance(obj, dict)
         self.github = obj.get("github", None)
         self.website = obj.get("website", None)
@@ -42,15 +54,3 @@ class UserConnections:
         self.snapchat = obj.get("snapchat", None)
         self.linkedin = obj.get("linkedin", None)
         self.discord = [DiscordConnection(c) for c in discord]
-
-
-class DiscordConnection:
-    connection_type: str
-    name: str
-    url: str
-
-    def __init__(self, obj: dict) -> DiscordConnection:
-        assert isinstance(obj, dict)
-        connection_type = obj.get("connection_type")
-        name = obj.get("name")
-        url = obj.get("url")
