@@ -16,13 +16,13 @@ __author__ = "GamingGeek (Jake Ward)"
 __email__ = "geek@gaminggeek.dev"
 
 __title__ = "dbio"
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 __summary__ = "An asynchronous wrapper for the discord.bio api"
 __uri__ = "https://github.com/GamingGeek/dbio"
 
 __requirements__ = [
     'aiohttp>=3.6.2',
-    'python-dateutil'
+    'python-dateutil>=2.8.0'
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
