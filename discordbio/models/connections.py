@@ -33,9 +33,9 @@ class DiscordConnection:
 
     def __init__(self, obj: dict) -> 'DiscordConnection':
         assert isinstance(obj, dict)
-        connection_type = obj.get("connection_type")
-        name = obj.get("name")
-        url = obj.get("url")
+        self.connection_type = obj.get("connection_type")
+        self.name = obj.get("name")
+        self.url = obj.get("url")
 
 
 class UserConnections:
@@ -48,9 +48,9 @@ class UserConnections:
 
     def __init__(self, obj: dict, discord: list = list) -> 'UserConnections':
         assert isinstance(obj, dict)
-        self.github = obj.get("github", None)
-        self.website = obj.get("website", None)
-        self.instagram = obj.get("instagram", None)
-        self.snapchat = obj.get("snapchat", None)
-        self.linkedin = obj.get("linkedin", None)
+        self.github = obj.get("github", {}).get("name", None)
+        self.website = obj.get("website", {}).get("name", None)
+        self.instagram = obj.get("instagram", {}).get("name", None)
+        self.snapchat = obj.get("snapchat", {}).get("name", None)
+        self.linkedin = obj.get("linkedin", {}).get("name", None)
         self.discord = [DiscordConnection(c) for c in obj.get("discord", [])]
