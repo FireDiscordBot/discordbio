@@ -42,14 +42,14 @@ def from_datetime(x: str) -> Optional[datetime]:
 
 
 class Discord:
-    id: str
+    id: int
     username: str
     avatar: Optional[str]
     discriminator: str
 
     def __init__(self, obj: dict) -> 'Discord':
         assert isinstance(obj, dict)
-        self.id = obj.get("id")
+        self.id = int(obj.get("id"))  # int for easy use with discord.py
         self.username = obj.get("username")
         self.avatar = obj.get("avatar", None)
         self.discriminator = obj.get("discriminator")
@@ -60,6 +60,9 @@ class Settings:
     name: str
     status: Optional[str]
     description: Optional[str]
+    verified: bool
+    upvotes: int
+    premium: bool
     location: Optional[str]
     gender: Optional[str]
     birthday: Optional[datetime]
@@ -70,13 +73,18 @@ class Settings:
 
     def __init__(self, obj: dict) -> 'Settings':
         assert isinstance(obj, dict)
-        self.user_id = int(obj.get("user_id"))
+        self.user_id = int(obj.get("user_id"))  # int for easy use with discord.py
         self.name = obj.get("name")
         self.status = obj.get("status", None)
         self.description = obj.get("description", None)
+        self.verified = bool(obj.get('verified', 0))
+        self.upvotes = obj.get('upvotes', 0)
+        self.premium = bool(obj.get('premium_status', 0))
         self.location = obj.get("location", None)
         self.gender = GENDER.get(obj.get("gender"), None)
-        self.birthday = from_datetime(obj.get("birthday"))
+        self.birthday = None
+        if obj.get("birthday", None):
+            self.birthday = from_datetime(obj.get("birthday"))
         self.email = obj.get("email", None)
         self.occupation = obj.get("occupation", None)
         self.created_at = from_datetime(obj.get("created_at"))
