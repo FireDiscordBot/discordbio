@@ -15,10 +15,10 @@ base_dir = os.path.dirname(__file__)
 __author__ = "GamingGeek (Jake Ward)"
 __email__ = "geek@gaminggeek.dev"
 
-__title__ = "dbio"
+__title__ = "discordbio"
 __version__ = "1.0.0"
 __summary__ = "An asynchronous wrapper for the discord.bio api"
-__uri__ = "https://github.com/GamingGeek/dbio"
+__uri__ = "https://github.com/GamingGeek/discordbio"
 
 __requirements__ = [
     'aiohttp>=3.6.2',

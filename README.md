@@ -1,4 +1,4 @@
-# dbio
+# discordbio
 
 An asynchronous Python wrapper for the [discord.bio API](https://api.discord.bio/v1)
 
@@ -7,7 +7,7 @@ An asynchronous Python wrapper for the [discord.bio API](https://api.discord.bio
 As of now, the wrapper is not yet on PyPi, but you can install directly from GitHub
 
 ```
-pip install -U git+https://github.com/GamingGeek/dbio@master
+pip install -U git+https://github.com/GamingGeek/discordbio@master
 ```
 
 ### Usage
