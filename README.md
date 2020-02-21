@@ -16,7 +16,7 @@ pip install -U git+https://github.com/GamingGeek/discordbio@master
 > This will be used to make requests to the API
 
 ```py
-from dbio import DBioClient
+from discordbio import DBioClient
 
 client = DBioClient()
 ```
@@ -29,7 +29,7 @@ client = DBioClient()
 details = await client.details("geek")
 
 # With Type
-from dbio import UserDetails
+from discordbio import UserDetails
 
 details: UserDetails = await client.details("geek")
 ```
@@ -49,7 +49,7 @@ connections = await client.connections("geek")
 connections = await client.connections("geek", with_discord=True)
 
 # With Type
-from dbio import UserConnections
+from discordbio import UserConnections
 
 connections: UserConnections = await client.connections("geek", with_discord=True)
 ```
