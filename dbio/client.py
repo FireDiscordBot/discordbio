@@ -55,5 +55,5 @@ class DBioClient:
         return UserConnections(connections)
 
     async def total_users(self) -> int:
-        details = await self.api(f'/totalUsers')
-        return details['count']
+        users = await self.api(f'/totalUsers')
+        return users['count']
