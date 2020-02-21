@@ -3,7 +3,7 @@
 
 Initial Release
 
-1.0.3 - 21 February 2020
-==========================
+1.1.0 - 21 Februrary 2020
+===========================
 
-Fixes a bunch of import errors (hopefully, pushing to github before PyPi this time)
+Fixes import errors, Discord connections not showing and accounts for API changes

@@ -16,7 +16,7 @@ __author__ = "GamingGeek (Jake Ward)"
 __email__ = "geek@gaminggeek.dev"
 
 __title__ = "discordbio"
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 __summary__ = "An asynchronous wrapper for the discord.bio api"
 __uri__ = "https://github.com/GamingGeek/discordbio"
 
