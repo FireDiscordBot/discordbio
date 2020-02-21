@@ -53,3 +53,7 @@ class DBioClient:
             discord = await self.api(f'/getDiscordConnections/{query}')
             return UserConnections(connections, discord)
         return UserConnections(connections)
+
+    async def total_users(self) -> int:
+        details = await self.api(f'/totalUsers')
+        return details['count']
