@@ -53,4 +53,4 @@ class UserConnections:
         self.instagram = obj.get("instagram", None)
         self.snapchat = obj.get("snapchat", None)
         self.linkedin = obj.get("linkedin", None)
-        self.discord = [DiscordConnection(c) for c in discord]
+        self.discord = [DiscordConnection(c) for c in obj.get("discord", [])]
