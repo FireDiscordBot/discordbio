@@ -42,15 +42,15 @@ class DBioClient:
             raise HTTPException(res)
 
     async def details(self, query: str) -> UserDetails:
-        details = await self.api(f'/getUserDetails/{query}')
+        details = await self.api(f'/userDetails/{query}')
         if details['success']:
             return UserDetails(details)
         raise DBioError
 
     async def connections(self, query: str, with_discord: bool = False) -> UserConnections:
-        connections = await self.api(f'/getUserConnections/{query}')
+        connections = await self.api(f'/userConnections/{query}')
         if with_discord:
-            discord = await self.api(f'/getDiscordConnections/{query}')
+            discord = await self.api(f'/discordConnections/{query}')
             return UserConnections(connections, discord)
         return UserConnections(connections)
 
