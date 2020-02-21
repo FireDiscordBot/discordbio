@@ -46,11 +46,11 @@ class UserConnections:
     linkedin: Optional[str]
     discord: List[DiscordConnection]
 
-    def __init__(self, obj: dict, discord: list = list) -> 'UserConnections':
+    def __init__(self, obj: dict, discord: list = []) -> 'UserConnections':
         assert isinstance(obj, dict)
         self.github = obj.get("github", {}).get("name", None)
         self.website = obj.get("website", {}).get("name", None)
         self.instagram = obj.get("instagram", {}).get("name", None)
         self.snapchat = obj.get("snapchat", {}).get("name", None)
         self.linkedin = obj.get("linkedin", {}).get("name", None)
-        self.discord = [DiscordConnection(c) for c in obj.get("discord", [])]
+        self.discord = [DiscordConnection(c) for c in discord]
