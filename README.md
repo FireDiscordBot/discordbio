@@ -4,10 +4,8 @@ An asynchronous Python wrapper for the [discord.bio API](https://api.discord.bio
 
 ### Installing
 
-As of now, the wrapper is not yet on PyPi, but you can install directly from GitHub
-
 ```
-pip install -U git+https://github.com/GamingGeek/discordbio@master
+pip install discordbio
 ```
 
 ### Usage

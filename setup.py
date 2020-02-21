@@ -16,7 +16,7 @@ __author__ = "GamingGeek (Jake Ward)"
 __email__ = "geek@gaminggeek.dev"
 
 __title__ = "discordbio"
-__version__ = "1.0.0"
+__version__ = "1.0.3"
 __summary__ = "An asynchronous wrapper for the discord.bio api"
 __uri__ = "https://github.com/GamingGeek/discordbio"
 
@@ -32,6 +32,7 @@ setup(
     name=__title__,
     version=__version__,
     description=__summary__,
+    long_description_content_type='text/markdown',
     long_description=long_description,
     packages=find_packages(exclude=['tests']),
     author=__author__,

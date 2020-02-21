@@ -23,8 +23,8 @@ SOFTWARE.
 """
 
 
-from .models.connections import UserConnections
-from .models.user_details import UserDetails
+from models.connections import UserConnections
+from models.user_details import UserDetails
 from .errors import HTTPException, DBioError
 import aiohttp
 
