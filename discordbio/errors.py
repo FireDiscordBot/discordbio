@@ -23,17 +23,33 @@ SOFTWARE.
 """
 
 
+from typing import Optional
 import aiohttp
 
 
-class HTTPException(Exception):
-    """Exception that's raised when a HTTP request fails"""
-    response: aiohttp.ClientResponse
+class BaseDBioException(Exception):
+    """The base class all exceptions subclass. 
+    Can be used to catch any exception from this wrapper"""
+    message: str
 
-    def __init__(self, response):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
+
+
+class HTTPException(BaseDBioException):
+    """Exception that's raised when a HTTP request fails"""
+    response: Optional[aiohttp.ClientResponse]
+
+    def __init__(self, message, response=None):
+        super().__init__(message)
         self.response = response
 
 
 class DBioError(Exception):
     """Exception that's raised when discord.bio gives an error"""
-    pass
+
+    def __init__(self, message):
+        super().__init__(message)
