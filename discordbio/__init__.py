@@ -24,6 +24,6 @@ SOFTWARE.
 
 
 from .models.connections import UserConnections
-from .models.user_details import UserDetails
+from .models.user_details import UserDetails, PartialUser
 from .client import DBioClient
 from .errors import *
