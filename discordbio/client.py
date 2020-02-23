@@ -23,9 +23,10 @@ SOFTWARE.
 """
 
 
+from .models.user_details import UserDetails, PartialUser
 from .models.connections import UserConnections
-from .models.user_details import UserDetails
 from .errors import HTTPException, DBioError
+from typing import List
 import aiohttp
 
 
@@ -35,25 +36,40 @@ class DBioClient:
         self.BASE_URL = "https://api.discord.bio/v1"
 
     async def api(self, path: str):
-        res = await self._session.get(self.BASE_URL + path)
         try:
-            return await res.json()
-        except Exception:
-            raise HTTPException(res)
+            res = await self._session.get(self.BASE_URL + path)
+        except Exception as e:
+            raise HTTPException(str(e))
+        try:
+            return (await res.json()), res.status
+        except Exception as e:
+            raise HTTPException(str(e), res)
 
     async def details(self, query: str) -> UserDetails:
-        details = await self.api(f'/userDetails/{query}')
+        details, status = await self.api(f'/userDetails/{query}')
         if details['success']:
             return UserDetails(details)
-        raise DBioError
+        if status == 202:
+            raise DBioError(f'Bio for {query} could not be found')
 
     async def connections(self, query: str, with_discord: bool = False) -> UserConnections:
-        connections = await self.api(f'/userConnections/{query}')
+        connections, status = await self.api(f'/userConnections/{query}')
+        if status == 202:
+            raise DBioError(f'Connections for {query} could not be found')
         if with_discord:
-            discord = await self.api(f'/discordConnections/{query}')
+            discord, status = await self.api(f'/discordConnections/{query}')
             return UserConnections(connections, discord)
         return UserConnections(connections)
 
     async def total_users(self) -> int:
-        users = await self.api(f'/totalUsers')
+        users, status = await self.api(f'/totalUsers')
+        if status != 200:
+            raise DBioError(f'Non success status code {status} when fetching total users')
         return users['count']
+
+    async def top_upvoted(self) -> List[PartialUser]:
+        upvoted, status = await self.api(f'/topUpvoted')
+        if isinstance(upvoted, list):
+            return [PartialUser(u) for u in upvoted]
+        else:
+            raise DBioError(f'Failed to retrieve top upvoted users')
