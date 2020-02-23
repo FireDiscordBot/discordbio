@@ -42,6 +42,7 @@ def from_datetime(x: str) -> Optional[datetime]:
 
 
 class Discord:
+    """A user's Discord"""
     id: int
     username: str
     avatar: Optional[str]
@@ -54,8 +55,22 @@ class Discord:
         self.avatar = obj.get("avatar", None)
         self.discriminator = obj.get("discriminator")
 
+    @property
+    def avatar_url(self) -> str:
+        """Returns the user's avatar as either PNG or GIF"""
+        if not self.avatar:
+            return f'https://cdn.discordapp.com/embed/avatars/' + int(self.discriminator) % 5 + '.png'
+        if self.is_avatar_animated:
+            return f'https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.gif'
+        return f'https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png'
+
+    @property
+    def is_avatar_animated(self) -> bool:
+        return bool(self.avatar and self.avatar.startswith('a_'))
+
 
 class Settings:
+    """A user's settings"""
     user_id: int
     name: str
     status: Optional[str]
@@ -92,6 +107,7 @@ class Settings:
 
 
 class UserDetails:
+    """A discord.bio user object"""
     settings: Settings
     discord: Discord
 
@@ -99,3 +115,25 @@ class UserDetails:
         assert isinstance(obj, dict)
         self.settings = Settings(obj.get("settings"))
         self.discord = Discord(obj.get("discord"))
+
+
+class PartialUser:
+    """A user consisting of partial data similar to :class:`Settings` and full version of :class:`Discord`"""
+    user_id: int
+    name: str
+    description: Optional[str]
+    verified: bool
+    upvotes: int
+    premium: bool
+    discord: Discord
+
+    def __init__(self, obj: dict) -> 'PartialUser':
+        assert isinstance(obj, dict)
+        user = obj.get('user', {})
+        self.user_id = int(user.get("user_id"))  # int for easy use with discord.py
+        self.name = user.get("name")
+        self.description = user.get("description", None)
+        self.verified = bool(user.get('verified', 0))
+        self.upvotes = user.get('upvotes', 0)
+        self.premium = bool(user.get('premium_status', 0))
+        self.discord = Discord(obj.get('discord', {}))
