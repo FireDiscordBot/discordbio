@@ -19,13 +19,23 @@ from discordbio import DBioClient
 client = DBioClient()
 ```
 
+* Exceptions
+
+| Error | Description |
+| ----- | ----------- |
+| discordbio.errors.BaseDBioException | Exception others subclass from, can be used to catch any error thrown from the wrapper |
+| discordbio.errors.DBioError | Raised when discord.bio doesn't return a successful response |
+| discordbio.errors.HTTPException | Raised when the request to discord.bio itself fails |
+
 * Getting a user's details, via username or Discord ID
 > All methods of DBioClient are typed meaning your IDE should auto complete the attributes
 > If not, you can import the types (UserDetails and UserConnections) and manually set the type
 
 ```py
 details = await client.details("geek")
+```
 
+```py
 # With Type
 from discordbio import UserDetails
 
@@ -45,16 +55,33 @@ connections = await client.connections("geek")
 
 # With Discord connections
 connections = await client.connections("geek", with_discord=True)
+```
 
+```py
 # With Type
 from discordbio import UserConnections
+
 
 connections: UserConnections = await client.connections("geek", with_discord=True)
 ```
 
+* Miscellaneous Endpoints
+
+```py
+users = await client.total_users()  # Returns total user count
+```
+
+```py
+from discordbio import PartialUser
+from typing import List
+
+
+upvoted: List[PartialUser] = await client.top_upvoted() 
+```
+
 ### Attributes
 
-* Details (from client.details)
+* UserDetails (from client.details)
 ```py
 settings: Settings
 discord: Discord
@@ -83,7 +110,20 @@ banner: Optional[str]
 id: int
 username: str
 avatar: Optional[str]
+avatar_url: str
+is_avatar_animated: bool
 discriminator: str
+```
+
+* Partial User (from client.top_upvoted)
+```py
+user_id: int
+name: str
+description: Optional[str]
+verified: bool
+upvotes: int
+premium: bool
+discord: Discord
 ```
 
 * Connections (from client.connections)
