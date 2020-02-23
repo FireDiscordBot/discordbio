@@ -46,6 +46,8 @@ class Discord:
     id: int
     username: str
     avatar: Optional[str]
+    avatar_url: str
+    is_avatar_animated: bool
     discriminator: str
 
     def __init__(self, obj: dict) -> 'Discord':
