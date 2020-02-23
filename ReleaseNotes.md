@@ -7,3 +7,8 @@ Initial Release
 ===========================
 
 Fixes import errors, Discord connections not showing and accounts for API changes
+
+1.2.0 - 23 February 2020
+==========================
+
+Adds /topUpvoted endpoint, status code checks, better exceptions (now with messages)
