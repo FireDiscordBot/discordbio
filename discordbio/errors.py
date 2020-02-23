@@ -28,7 +28,7 @@ import aiohttp
 
 
 class BaseDBioException(Exception):
-    """The base class all exceptions subclass. 
+    """The base class all exceptions subclass.
     Can be used to catch any exception from this wrapper"""
     message: str
 
@@ -48,7 +48,7 @@ class HTTPException(BaseDBioException):
         self.response = response
 
 
-class DBioError(Exception):
+class DBioError(BaseDBioException):
     """Exception that's raised when discord.bio gives an error"""
 
     def __init__(self, message):
