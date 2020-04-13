@@ -42,10 +42,13 @@ from discordbio import UserDetails
 details: UserDetails = await client.details("geek")
 ```
 
-* Getting a specific value from a user's details, e.g. description
+* Getting a specific value from a user's details, e.g. description or a users flags
 
 ```py
 description = (await client.details("geek")).settings.description
+
+flags = (await client.details("geek")).discord.flags
+# Flags can be used to determine a user's badges
 ```
 
 * Getting a user's connections
@@ -68,7 +71,7 @@ connections: UserConnections = await client.connections("geek", with_discord=Tru
 * Miscellaneous Endpoints
 
 ```py
-users = await client.total_users()  # Returns total user count
+users: int = await client.total_users()  # Returns total user count
 ```
 
 ```py
@@ -113,6 +116,7 @@ avatar: Optional[str]
 avatar_url: str
 is_avatar_animated: bool
 discriminator: str
+flags: int
 ```
 
 * Partial User (from client.top_upvoted)
