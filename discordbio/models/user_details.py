@@ -49,13 +49,15 @@ class Discord:
     avatar_url: str
     is_avatar_animated: bool
     discriminator: str
+    flags: int
 
     def __init__(self, obj: dict) -> 'Discord':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.id = int(obj.get("id"))  # int for easy use with discord.py
         self.username = obj.get("username")
         self.avatar = obj.get("avatar", None)
         self.discriminator = obj.get("discriminator")
+        self.flags = obj.get("public_flags", 0)
 
     @property
     def avatar_url(self) -> str:
@@ -89,7 +91,7 @@ class Settings:
     banner: Optional[str]
 
     def __init__(self, obj: dict) -> 'Settings':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.user_id = int(obj.get("user_id"))  # int for easy use with discord.py
         self.name = obj.get("name")
         self.status = obj.get("status", None)
@@ -114,7 +116,7 @@ class UserDetails:
     discord: Discord
 
     def __init__(self, obj: dict) -> 'UserDetails':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.settings = Settings(obj.get("settings"))
         self.discord = Discord(obj.get("discord"))
 
@@ -130,7 +132,7 @@ class PartialUser:
     discord: Discord
 
     def __init__(self, obj: dict) -> 'PartialUser':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         user = obj.get('user', {})
         self.user_id = int(user.get("user_id"))  # int for easy use with discord.py
         self.name = user.get("name")

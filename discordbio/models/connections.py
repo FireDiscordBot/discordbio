@@ -32,7 +32,7 @@ class DiscordConnection:
     url: str
 
     def __init__(self, obj: dict) -> 'DiscordConnection':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.connection_type = obj.get("connection_type")
         self.name = obj.get("name")
         self.url = obj.get("url")
@@ -47,7 +47,7 @@ class UserConnections:
     discord: List[DiscordConnection]
 
     def __init__(self, obj: dict, discord: list = []) -> 'UserConnections':
-        assert isinstance(obj, dict)
+        assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.github = obj.get("github", {}).get("name", None)
         self.website = obj.get("website", {}).get("name", None)
         self.instagram = obj.get("instagram", {}).get("name", None)
