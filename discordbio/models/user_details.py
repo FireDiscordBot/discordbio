@@ -125,7 +125,7 @@ class UserDetails:
 
 
 class PartialUser:
-    """A user consisting of partial data similar to :class:`Settings` and full version of :class:`Discord`"""
+    """A user consisting of partial data similar to :class:`DBioUser` and full version of :class:`Discord`"""
     user_id: int
     name: str
     slug: str

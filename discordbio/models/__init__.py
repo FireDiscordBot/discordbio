@@ -22,5 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .user_details import UserDetails, PartialUser, Settings, Discord
+from .user_details import UserDetails, PartialUser, DBioUser, Discord
 from .connections import UserConnections, DiscordConnection

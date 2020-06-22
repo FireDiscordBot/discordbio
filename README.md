@@ -86,11 +86,11 @@ upvoted: List[PartialUser] = await client.top_upvoted()
 
 * UserDetails (from client.details)
 ```py
-settings: Settings
+user: DBioUser
 discord: Discord
 ```
 
-* Settings
+* DBioUser
 ```py
 user_id: int
 name: str
