@@ -73,8 +73,8 @@ class Discord:
         return bool(self.avatar and self.avatar.startswith('a_'))
 
 
-class Settings:
-    """A user's settings"""
+class DBioUser:
+    """A discord.bio user"""
     user_id: int
     name: str
     status: Optional[str]
@@ -82,6 +82,7 @@ class Settings:
     verified: bool
     upvotes: int
     premium: bool
+    staff: bool
     location: Optional[str]
     gender: Optional[str]
     birthday: Optional[datetime]
@@ -90,7 +91,7 @@ class Settings:
     created_at: datetime
     banner: Optional[str]
 
-    def __init__(self, obj: dict) -> 'Settings':
+    def __init__(self, obj: dict) -> 'DBioUser':
         assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         self.user_id = int(obj.get("user_id"))  # int for easy use with discord.py
         self.name = obj.get("name")
@@ -98,7 +99,8 @@ class Settings:
         self.description = obj.get("description", None)
         self.verified = bool(obj.get('verified', 0))
         self.upvotes = obj.get('upvotes', 0)
-        self.premium = bool(obj.get('premium_status', 0))
+        self.premium = obj.get('premium_status', False)
+        self.staff = obj.get('staff', False)
         self.location = obj.get("location", None)
         self.gender = GENDER.get(obj.get("gender"), None)
         self.birthday = None
@@ -112,12 +114,13 @@ class Settings:
 
 class UserDetails:
     """A discord.bio user object"""
-    settings: Settings
+    user: DBioUser
+    settings: DBioUser # backwards compatibility
     discord: Discord
 
     def __init__(self, obj: dict) -> 'UserDetails':
         assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
-        self.settings = Settings(obj.get("settings"))
+        self.user = self.settings = DBioUser(obj.get("user", {}).get("details", None))
         self.discord = Discord(obj.get("discord"))
 
 
@@ -125,19 +128,24 @@ class PartialUser:
     """A user consisting of partial data similar to :class:`Settings` and full version of :class:`Discord`"""
     user_id: int
     name: str
+    slug: str
     description: Optional[str]
     verified: bool
     upvotes: int
+    likes: int
+    staff: bool
     premium: bool
     discord: Discord
 
     def __init__(self, obj: dict) -> 'PartialUser':
         assert isinstance(obj, dict), 'Received malformed payload from discord.bio API'
         user = obj.get('user', {})
-        self.user_id = int(user.get("user_id"))  # int for easy use with discord.py
-        self.name = user.get("name")
+        discord = obj.get('discord', {})
+        self.user_id = int(discord.get("id"))  # int for easy use with discord.py
+        self.slug = self.name = user.get("slug")
         self.description = user.get("description", None)
         self.verified = bool(user.get('verified', 0))
-        self.upvotes = user.get('upvotes', 0)
-        self.premium = bool(user.get('premium_status', 0))
-        self.discord = Discord(obj.get('discord', {}))
+        self.staff = user.get('staff', False)
+        self.premium = user.get('premium_status', False)
+        self.likes = self.upvotes =  user.get('likes', 0)
+        self.discord = Discord(discord)

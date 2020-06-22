@@ -49,39 +49,27 @@ class DBioClient:
 
     async def details(self, query: str) -> UserDetails:
         details, status = await self.api(f'/user/details/{query}')
-        if details['success']:
+        if status == 200:
             return UserDetails(details['payload'])
         if status == 404:
             raise DBioError(f'Bio for {query} could not be found')
         raise DBioError(f'An unknown error occurred. Status: {status}')
 
     async def connections(self, query: str, with_discord: bool = False) -> UserConnections:
-        connections, status = await self.api(f'/user/connections/{query}')
-        if status == 202:
-            raise DBioError(f'Connections for {query} could not be found')
-        if with_discord:
-            discord, status = await self.api(f'user/discordConnections/{query}')
-            if connections['success'] and discord['success']:
-                return UserConnections(connections['payload'], discord['payload'])
-            else:
-                if not connections['success']:
-                    raise DBioError(f'Failed to retrieve connections')
-                else:
-                    raise DBioError(f'Failed to retrieve discord connections')
-        if connections['success']:
-            return UserConnections(connections['payload'])
-        else:
-            raise DBioError(f'Failed to retrieve connections')
+        details, status = await self.api(f'/user/details/{query}')
+        if status == 404:
+            raise DBioError(f'User {query} could not be found')
+        elif status == 200:
+            if with_discord:
+                return UserConnections(details['payload']['user']['userConnections'], details['payload']['user']['discordConnections'])
+            return UserConnections(details['payload']['user']['userConnections'])
+        raise DBioError(f'An unknown error occurred. Status: {status}')
 
     async def total_users(self) -> int:
-        users, status = await self.api(f'/totalUsers')
-        if status != 200:
-            raise DBioError(f'Non success status code {status} when fetching total users')
-        return users['payload']
+        raise DeprecationWarning('The "totalUsers" endpoint no longer exists')
 
     async def top_upvoted(self) -> List[PartialUser]:
-        upvoted, status = await self.api(f'/topUpvoted')
-        if isinstance(upvoted['payload'], list):
+        upvoted, status = await self.api(f'/topLikes')
+        if status == 200 and isinstance(upvoted['payload'], list):
             return [PartialUser(u) for u in upvoted['payload']]
-        else:
-            raise DBioError(f'Failed to retrieve top upvoted users')
+        raise DBioError(f'Failed to retrieve top upvoted users')
